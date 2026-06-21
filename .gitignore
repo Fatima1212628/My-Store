@@ -1,0 +1,21 @@
+# Python byte-compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Local Virtual Environments
+env/
+venv/
+ENV/
+
+# Databases
+db.sqlite3
+db.sqlite3-journal
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Code editors and IDEs
+.vscode/
+.idea/

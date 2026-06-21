@@ -1,0 +1,317 @@
+{% extends 'myapp/base.html' %}
+
+{% block title %}Checkout - E-Commerce Store{% endblock %}
+
+{% block extra_css %}
+<style>
+    .checkout-container {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 2rem;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .checkout-form {
+        background: white;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .form-section {
+        margin-bottom: 2rem;
+    }
+
+    .form-section h3 {
+        margin-bottom: 1rem;
+        color: #333;
+        border-bottom: 2px solid #667eea;
+        padding-bottom: 0.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .form-group input,
+    .form-group select {
+        width: 100%;
+        padding: 0.8rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 1rem;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+
+    .checkout-summary {
+        background: white;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        height: fit-content;
+    }
+
+    .summary-title {
+        font-size: 1.3rem;
+        font-weight: bold;
+        margin-bottom: 1.5rem;
+        color: #333;
+    }
+
+    .summary-items {
+        border-bottom: 2px solid #eee;
+        padding-bottom: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .summary-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.8rem 0;
+        color: #666;
+    }
+
+    .summary-item-name {
+        flex: 1;
+    }
+
+    .summary-item-price {
+        text-align: right;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .summary-totals {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .total-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.8rem 0;
+    }
+
+    .total-row.final {
+        font-size: 1.3rem;
+        font-weight: bold;
+        color: #667eea;
+        border-top: 2px solid #eee;
+        padding-top: 1rem;
+        margin-top: 1rem;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 1rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 1rem;
+        transition: 0.3s;
+        margin-top: 1.5rem;
+        text-decoration: none;
+        text-align: center;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        opacity: 0.9;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-secondary {
+        background: #e0e0e0;
+        color: #333;
+    }
+
+    .btn-secondary:hover {
+        background: #d0d0d0;
+    }
+
+    .security-badge {
+        text-align: center;
+        margin-top: 1rem;
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+        .checkout-container {
+            grid-template-columns: 1fr;
+        }
+
+        .form-row {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<h1>📋 Checkout</h1>
+
+<div class="checkout-container">
+    <!-- Checkout Form -->
+    <form method="post" class="checkout-form">
+        {% csrf_token %}
+
+        <!-- Shipping Address -->
+        <div class="form-section">
+            <h3>📍 Shipping Address</h3>
+            
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" name="full_name" value="{{ user.get_full_name }}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" name="email" value="{{ user.email }}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Phone Number</label>
+                <input type="tel" name="phone" placeholder="03XX-XXXXXXX" required>
+            </div>
+
+            <div class="form-group">
+                <label>Street Address</label>
+                <input type="text" name="address" placeholder="House/Building No. and Street" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>City</label>
+                    <input type="text" name="city" placeholder="City" required>
+                </div>
+                <div class="form-group">
+                    <label>Postal Code</label>
+                    <input type="text" name="postal_code" placeholder="Postal Code" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Country</label>
+                <select name="country" required>
+                    <option value="">Select Country</option>
+                    <option value="Pakistan">Pakistan</option>
+                    <option value="India">India</option>
+                    <option value="Bangladesh">Bangladesh</option>
+                    <option value="USA">USA</option>
+                    <option value="UAE">UAE</option>
+                    <option value="Saudi Arabia">Saudi Arabia</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Shipping Method -->
+        <div class="form-section">
+            <h3>🚚 Shipping Method</h3>
+            
+            <div class="form-group">
+                <label>
+                    <input type="radio" name="shipping" value="standard" checked> Standard Shipping (3-5 days) - FREE
+                </label>
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="radio" name="shipping" value="express"> Express Shipping (1-2 days) - $15
+                </label>
+            </div>
+        </div>
+
+        <!-- Payment Method -->
+        <div class="form-section">
+            <h3>💳 Payment Method</h3>
+            
+            <div class="form-group">
+                <label>
+                    <input type="radio" name="payment" value="card" checked> Credit/Debit Card
+                </label>
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="radio" name="payment" value="bank"> Bank Transfer
+                </label>
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="radio" name="payment" value="cod"> Cash on Delivery
+                </label>
+            </div>
+        </div>
+
+        <!-- Place Order Button -->
+        <button type="submit" class="btn btn-primary">✓ Place Order</button>
+        <a href="{% url 'view_cart' %}" class="btn btn-secondary">← Back to Cart</a>
+    </form>
+
+    <!-- Order Summary -->
+    <div class="checkout-summary">
+        <div class="summary-title">Order Summary</div>
+
+        <div class="summary-items">
+            {% for item in cart_items %}
+                <div class="summary-item">
+                    <span class="summary-item-name">
+                        {{ item.product.name }} x {{ item.quantity }}
+                    </span>
+                    <span class="summary-item-price">${{ item.item_total }}</span>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="summary-totals">
+            <div class="total-row">
+                <span>Subtotal:</span>
+                <span>${{ total_price }}</span>
+            </div>
+            <div class="total-row">
+                <span>Shipping:</span>
+                <span>FREE</span>
+            </div>
+            <div class="total-row">
+                <span>Tax (10%):</span>
+                <span>${{ tax_amount|floatformat:2 }}</span>
+            </div>
+            <div class="total-row final">
+                <span>Total:</span>
+                <span>${{ grand_total|floatformat:2 }}</span>
+            </div>
+        </div>
+
+        <div class="security-badge">
+            🔒 Secure Checkout | SSL Encrypted
+        </div>
+    </div>
+</div>
+
+{% endblock %}

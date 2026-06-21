@@ -1,0 +1,95 @@
+{% extends 'myapp/base.html' %}
+
+{% block title %}Logged Out - E-Commerce Store{% endblock %}
+
+{% block extra_css %}
+<style>
+    .logout-container {
+        max-width: 500px;
+        margin: 4rem auto;
+        background: white;
+        padding: 3rem;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        text-align: center;
+    }
+
+    .logout-badge {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+    }
+
+    .logout-title {
+        color: #333;
+        margin-bottom: 0.5rem;
+    }
+
+    .logout-subtitle {
+        color: #666;
+        margin-bottom: 2rem;
+        font-size: 1.05rem;
+    }
+
+    .logout-message {
+        background: #d1ecf1;
+        border: 1px solid #bee5eb;
+        color: #0c5460;
+        padding: 1rem;
+        border-radius: 5px;
+        margin-bottom: 2rem;
+    }
+
+    .btn-group {
+        display: flex;
+        gap: 1rem;
+        flex-direction: column;
+    }
+
+    .btn {
+        padding: 1rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 1rem;
+        text-decoration: none;
+        text-align: center;
+        transition: 0.3s;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        opacity: 0.9;
+    }
+
+    .btn-secondary {
+        background: #e0e0e0;
+        color: #333;
+    }
+
+    .btn-secondary:hover {
+        background: #d0d0d0;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="logout-container">
+    <div class="logout-badge">👋</div>
+    <h1 class="logout-title">You have been logged out</h1>
+    <p class="logout-subtitle">Thanks for using our store!</p>
+
+    <div class="logout-message">
+        <p>You can login again anytime to continue shopping and view your orders.</p>
+    </div>
+
+    <div class="btn-group">
+        <a href="{% url 'product_list' %}" class="btn btn-primary">← Back to Home</a>
+        <a href="{% url 'login' %}" class="btn btn-secondary">Login Again</a>
+    </div>
+</div>
+{% endblock %}
